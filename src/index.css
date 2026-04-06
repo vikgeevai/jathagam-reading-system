@@ -1,0 +1,2258 @@
+/* ================================================================
+   ZONE 1 — CUSTOM PROPERTIES & PALETTE
+   ================================================================ */
+:root {
+  --deep-space:      #07071e;
+  --space-mid:       #0a0a2e;
+  --space-light:     #12134a;
+  --card-bg:         rgba(14, 14, 58, 0.60);
+  --card-bg-inner:   rgba(8, 8, 40, 0.70);
+  --card-border:     rgba(212, 175, 55, 0.18);
+
+  --gold:            #d4af37;
+  --gold-light:      #f0d060;
+  --gold-dim:        #9a7520;
+  --gold-glow:       rgba(212, 175, 55, 0.35);
+  --saffron:         #ff9933;
+  --saffron-light:   #ffb84d;
+
+  --green-glow:      #22c55e;
+  --green-dim:       #15803d;
+  --red-glow:        #ef4444;
+  --red-dim:         #991b1b;
+  --amber-warn:      #f59e0b;
+
+  --text-primary:    #f0e8d0;
+  --text-secondary:  #c8b87a;
+  --text-muted:      #7a6b4a;
+  --text-faint:      #4a4030;
+
+  --font-display:    'Cinzel', 'Georgia', serif;
+  --font-body:       'Noto Serif', 'Georgia', serif;
+
+  --r-xs:  4px;
+  --r-sm:  8px;
+  --r-md:  16px;
+  --r-lg:  24px;
+  --r-xl:  32px;
+  --r-full: 9999px;
+}
+
+/* ================================================================
+   ZONE 2 — KEYFRAME ANIMATIONS
+   ================================================================ */
+@keyframes starFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: var(--star-opacity, 0.6); }
+  50%       { transform: translateY(-10px) scale(1.3); opacity: 1; }
+}
+
+@keyframes sectionFadeIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes goldGlowPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(212,175,55,0.3), 0 0 30px rgba(212,175,55,0.12); }
+  50%       { box-shadow: 0 0 24px rgba(212,175,55,0.75), 0 0 70px rgba(212,175,55,0.40), 0 4px 20px rgba(0,0,0,0.4); }
+}
+
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to   { width: var(--target-width, 50%); }
+}
+
+@keyframes greenPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(34,197,94,0.15), 0 0 0 1px rgba(34,197,94,0.15); }
+  50%       { box-shadow: 0 0 24px rgba(34,197,94,0.45), 0 0 0 1px rgba(34,197,94,0.35); }
+}
+
+@keyframes redPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(239,68,68,0.15), 0 0 0 1px rgba(239,68,68,0.15); }
+  50%       { box-shadow: 0 0 24px rgba(239,68,68,0.40), 0 0 0 1px rgba(239,68,68,0.30); }
+}
+
+@keyframes mandalaRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes goldBorderPulse {
+  0%, 100% { border-color: rgba(212,175,55,0.25); }
+  50%       { border-color: rgba(212,175,55,0.65); }
+}
+
+@keyframes formReveal {
+  from { opacity: 0; transform: scale(0.96) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ================================================================
+   ZONE 3 — GLOBAL RESET & BASE
+   ================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--deep-space);
+  background-image:
+    radial-gradient(ellipse at 30% 0%, rgba(18,19,74,0.9) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 100%, rgba(26,8,60,0.7) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, var(--space-mid) 0%, var(--deep-space) 80%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ================================================================
+   ZONE 3b — STAR FIELD
+   ================================================================ */
+.star-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  animation: starFloat var(--duration, 4s) var(--delay, 0s) ease-in-out infinite;
+}
+
+/* ================================================================
+   ZONE 4 — GLASSMORPHISM CARD SYSTEM
+   ================================================================ */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r-lg);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.glass-card--gold {
+  border-color: rgba(212, 175, 55, 0.30);
+  animation: goldBorderPulse 4s ease-in-out infinite;
+  box-shadow: 0 0 0 1px rgba(212,175,55,0.06) inset, 0 8px 40px rgba(0,0,0,0.5);
+}
+
+.glass-card--green {
+  border-color: rgba(34, 197, 94, 0.25);
+  animation: greenPulse 3.5s ease-in-out infinite;
+}
+
+.glass-card--red {
+  border-color: rgba(239, 68, 68, 0.25);
+  animation: redPulse 3.5s ease-in-out infinite;
+}
+
+.glass-card--pariharam {
+  border: 1px solid rgba(212, 175, 55, 0.40);
+  background: rgba(18, 8, 48, 0.75);
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,0.08) inset,
+    0 0 60px rgba(212,175,55,0.06),
+    0 12px 48px rgba(0,0,0,0.6);
+}
+
+.glass-card--inner {
+  background: var(--card-bg-inner);
+  border: 1px solid rgba(212, 175, 55, 0.12);
+  border-radius: var(--r-md);
+  padding: 1.25rem;
+}
+
+/* ================================================================
+   ZONE 5 — SECTION REVEAL ANIMATION
+   ================================================================ */
+.section-reveal {
+  opacity: 0;
+  animation: sectionFadeIn 0.65s ease-out forwards;
+  animation-delay: calc(var(--section-index, 0) * 0.25s + 0.1s);
+  margin-bottom: 1.5rem;
+}
+
+/* ================================================================
+   ZONE 6 — TYPOGRAPHY HIERARCHY
+   ================================================================ */
+.cinzel-heading { font-family: var(--font-display); letter-spacing: 0.06em; }
+
+.section-header { margin-bottom: 1.75rem; }
+
+.section-title {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 0.75rem;
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), rgba(212,175,55,0.4), var(--gold-dim), transparent);
+  margin-top: 0.75rem;
+}
+
+.planet-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(212,175,55,0.10);
+  border: 1px solid rgba(212,175,55,0.22);
+  border-radius: var(--r-full);
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  color: var(--gold-light);
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+}
+
+.planet-badge--sm { font-size: 0.72rem; padding: 2px 8px; }
+
+.planet-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--planet-colour, var(--gold));
+  flex-shrink: 0;
+}
+
+/* ================================================================
+   ZONE 7 — LAYOUT
+   ================================================================ */
+.app-container {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ================================================================
+   ZONE 8 — INPUT FORM
+   ================================================================ */
+.form-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 680px;
+  animation: formReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.form-mandala {
+  flex-shrink: 0;
+}
+
+.mandala-svg .mandala-outer {
+  animation: mandalaRotate 80s linear infinite reverse;
+  transform-box: fill-box;
+}
+
+.mandala-svg .mandala-inner {
+  animation: mandalaRotate 40s linear infinite;
+  transform-box: fill-box;
+}
+
+.form-title-block { flex: 1; min-width: 180px; }
+
+.form-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--saffron);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.form-title {
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  color: var(--gold);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.jathagam-form { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group--full { grid-column: 1 / -1; }
+
+.form-label {
+  font-size: 0.82rem;
+  color: var(--saffron-light);
+  letter-spacing: 0.08em;
+}
+
+.form-input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(212,175,55,0.22);
+  border-radius: var(--r-sm);
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 200ms, box-shadow 200ms, background 200ms;
+  outline: none;
+}
+
+.form-input::placeholder { color: var(--text-muted); }
+
+.form-input:focus {
+  border-color: var(--gold);
+  background: rgba(255,255,255,0.09);
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.12);
+}
+
+.form-input--error { border-color: var(--red-glow) !important; }
+
+.form-error {
+  font-size: 0.78rem;
+  color: var(--red-glow);
+  margin-top: 2px;
+}
+
+.gender-options {
+  display: flex;
+  gap: 1rem;
+}
+
+.gender-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(212,175,55,0.22);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.04);
+  transition: all 200ms;
+}
+
+.gender-option input[type="radio"] { display: none; }
+
+.gender-option:hover {
+  border-color: rgba(212,175,55,0.45);
+  color: var(--gold-light);
+}
+
+.gender-option--active {
+  border-color: var(--gold);
+  background: rgba(212,175,55,0.12);
+  color: var(--gold-light);
+  box-shadow: 0 0 12px rgba(212,175,55,0.15);
+}
+
+.btn-generate {
+  background: linear-gradient(135deg, var(--gold), var(--saffron) 60%, #e07020);
+  color: #1a0800;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 1rem 2.5rem;
+  border-radius: var(--r-md);
+  border: none;
+  cursor: pointer;
+  animation: goldGlowPulse 2.5s ease-in-out infinite;
+  transition: transform 150ms, filter 150ms;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.btn-generate:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.btn-generate:active { transform: translateY(0); }
+
+.form-footer-decor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  color: var(--gold-dim);
+  opacity: 0.7;
+}
+
+.form-footer-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  max-width: 80px;
+}
+
+/* ================================================================
+   ZONE 9 — REPORT HEADER
+   ================================================================ */
+.report-container { display: flex; flex-direction: column; gap: 0; }
+
+.report-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r-lg);
+  flex-wrap: wrap;
+  animation: sectionFadeIn 0.5s ease-out forwards;
+}
+
+.report-header__name {
+  font-size: clamp(1.2rem, 4vw, 1.8rem);
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.report-header__meta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+}
+
+.btn-new-reading {
+  background: rgba(212,175,55,0.10);
+  border: 1px solid rgba(212,175,55,0.30);
+  color: var(--gold);
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  transition: background 200ms, border-color 200ms;
+  white-space: nowrap;
+}
+
+.btn-new-reading:hover {
+  background: rgba(212,175,55,0.18);
+  border-color: rgba(212,175,55,0.55);
+}
+
+/* ================================================================
+   ZONE 10 — CHALDEAN NUMEROLOGY
+   ================================================================ */
+.chaldean-name-display {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: var(--gold);
+  text-align: center;
+  letter-spacing: 0.3em;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 0 20px rgba(212,175,55,0.4);
+}
+
+.letter-table-wrap {
+  margin-bottom: 1.75rem;
+}
+
+.letter-table {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.letter-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 44px;
+  padding: 6px 4px;
+  border-radius: var(--r-xs);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 150ms;
+}
+
+.letter-cell:hover { transform: translateY(-3px); }
+
+.letter-cell--vowel {
+  background: rgba(255, 153, 51, 0.15);
+  border-color: rgba(255, 153, 51, 0.3);
+}
+
+.letter-cell--consonant {
+  background: rgba(212, 175, 55, 0.10);
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+.letter-cell__letter {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.letter-cell__value {
+  font-size: 0.75rem;
+  color: var(--gold);
+  margin-top: 2px;
+}
+
+.letter-legend {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.legend-item { display: flex; align-items: center; gap: 4px; }
+.legend-item--vowel { color: var(--saffron-light); }
+.legend-item--consonant { color: var(--gold); }
+
+.numerology-results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.num-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.25rem 1rem;
+}
+
+.num-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.num-card__icon { font-size: 1.2rem; }
+
+.num-card__label {
+  font-size: 0.8rem;
+  color: var(--saffron);
+  letter-spacing: 0.05em;
+}
+
+.num-card__number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(212,175,55,0.5);
+}
+
+.num-card__interpretation {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  text-align: center;
+}
+
+/* ================================================================
+   ZONE 11 — VEDIC NUMEROLOGY
+   ================================================================ */
+.vedic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.vedic-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.vedic-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.vedic-card__icon { font-size: 1.4rem; flex-shrink: 0; }
+
+.vedic-card__title {
+  font-size: 0.95rem;
+  color: var(--saffron);
+}
+
+.vedic-card__subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.vedic-card__number {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(212,175,55,0.45);
+}
+
+.vedic-card__details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.vedic-detail {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vedic-detail__label {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  color: var(--saffron);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.vedic-card__interpretation {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ================================================================
+   ZONE 12 — HORA & LAGNA
+   ================================================================ */
+.hora-lagna-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.hora-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hora-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--r-sm);
+  border: 1px solid;
+  width: fit-content;
+}
+
+.hora-card__icon { font-size: 1.3rem; }
+
+.hora-card__eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.hora-card__planet {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.lagna-tamil {
+  font-size: 0.9rem;
+  color: var(--saffron);
+  margin-top: -0.4rem;
+}
+
+.hora-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0.25rem 0;
+}
+
+.hora-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 0.2rem 0;
+}
+
+.hora-meta-label {
+  color: var(--saffron);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.hora-meta-value { color: var(--text-primary); }
+
+.hora-card__interpretation {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ================================================================
+   ZONE 13 — LIFE DOMAINS
+   ================================================================ */
+.domains-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.domain-item {
+  animation: cardFadeIn 0.5s ease-out forwards;
+  animation-delay: calc(var(--item-index, 0) * 0.12s + 0.3s);
+  opacity: 0;
+}
+
+.domain-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.domain-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.domain-icon { font-size: 1.2rem; }
+
+.domain-label { font-size: 0.95rem; color: var(--text-primary); }
+
+.domain-score-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.domain-score-badge[data-colour="green"] .domain-score { color: var(--green-glow); }
+.domain-score-badge[data-colour="amber"] .domain-score { color: var(--amber-warn); }
+.domain-score-badge[data-colour="red"]   .domain-score { color: var(--red-glow); }
+
+.domain-score { font-size: 1.5rem; font-weight: 700; }
+.domain-score-max { font-size: 0.78rem; color: var(--text-muted); }
+
+.progress-track {
+  background: rgba(255,255,255,0.07);
+  border-radius: var(--r-full);
+  height: 10px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--r-full);
+  width: 0;
+  animation: progressFill 1.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.progress-fill--green { background: linear-gradient(90deg, #166534, var(--green-glow)); }
+.progress-fill--amber { background: linear-gradient(90deg, #92400e, var(--amber-warn)); }
+.progress-fill--red   { background: linear-gradient(90deg, var(--red-dim), var(--red-glow)); }
+
+.domain-reading {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.domain-legend {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.legend-pill {
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: var(--r-full);
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+}
+
+.legend-pill--green { background: rgba(34,197,94,0.12); color: var(--green-glow); border: 1px solid rgba(34,197,94,0.25); }
+.legend-pill--amber { background: rgba(245,158,11,0.12); color: var(--amber-warn); border: 1px solid rgba(245,158,11,0.25); }
+.legend-pill--red   { background: rgba(239,68,68,0.12);  color: var(--red-glow);   border: 1px solid rgba(239,68,68,0.25); }
+
+/* ================================================================
+   ZONE 14 — PREDICTION CARDS
+   ================================================================ */
+.prediction-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.prediction-card {
+  border-radius: var(--r-md);
+  padding: 1rem 1.25rem;
+  border: 1px solid;
+  animation: cardFadeIn 0.5s ease-out forwards;
+  animation-delay: calc(var(--card-index, 0) * 0.08s + 0.2s);
+  opacity: 0;
+}
+
+.prediction-card--positive {
+  background: rgba(22, 101, 52, 0.18);
+  border-color: rgba(34, 197, 94, 0.22);
+}
+
+.prediction-card--warning {
+  background: rgba(127, 29, 29, 0.20);
+  border-color: rgba(239, 68, 68, 0.22);
+}
+
+.prediction-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.prediction-card__icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+
+.prediction-card__category {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+  font-family: var(--font-display);
+}
+
+.prediction-card__headline {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.prediction-card__number {
+  margin-left: auto;
+  font-size: 1.6rem;
+  color: rgba(34,197,94,0.4);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.prediction-card__number--red { color: rgba(239,68,68,0.4); }
+
+.prediction-card__elaboration {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ================================================================
+   ZONE 15 — DO'S, DON'TS & REMEDIES
+   ================================================================ */
+.dos-donts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.dos-donts-title {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid;
+}
+
+.dos-title { color: var(--green-glow); border-color: rgba(34,197,94,0.25); }
+.donts-title { color: var(--red-glow); border-color: rgba(239,68,68,0.25); }
+
+.dos-list, .donts-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dos-item, .donts-item {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  padding-left: 1.2rem;
+  position: relative;
+  color: var(--text-secondary);
+}
+
+.dos-item::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--green-glow);
+  font-weight: 700;
+}
+
+.donts-item::before {
+  content: '✗';
+  position: absolute;
+  left: 0;
+  color: var(--red-glow);
+  font-weight: 700;
+}
+
+.remedy-card {
+  padding: 1.5rem;
+  border-radius: var(--r-lg);
+}
+
+.remedy-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.remedy-card__icon { font-size: 1.5rem; }
+.remedy-card__title { font-size: 1rem; color: var(--gold); flex: 1; }
+
+.remedy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.remedy-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.remedy-item__label {
+  font-size: 0.7rem;
+  color: var(--saffron);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.remedy-item__value {
+  font-size: 0.86rem;
+  color: var(--text-primary);
+}
+
+.remedy-numbers {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.remedy-number-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--r-full);
+  background: rgba(212,175,55,0.10);
+  border: 1px solid rgba(212,175,55,0.22);
+}
+
+.remedy-number-pill__label { font-size: 0.72rem; color: var(--saffron); }
+.remedy-number-pill__value { font-size: 0.9rem; color: var(--gold); }
+
+/* ================================================================
+   ZONE 16 — PARIHARAM
+   ================================================================ */
+.pariharam-header-decor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.5rem;
+  color: var(--gold-dim);
+  margin-bottom: 2rem;
+}
+
+.pariharam-divider-line {
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+
+.pariharam-om { font-size: 1.8rem; color: var(--gold); text-shadow: 0 0 16px rgba(212,175,55,0.5); }
+.pariharam-lotus { font-size: 1.6rem; }
+
+.pariharam-block {
+  margin-bottom: 2rem;
+}
+
+.pariharam-block-title {
+  font-size: 1rem;
+  color: var(--saffron);
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(255,153,51,0.2);
+}
+
+.deity-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.deity-card {
+  padding: 1.25rem;
+  background: rgba(212,175,55,0.06);
+  border: 1px solid rgba(212,175,55,0.20);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.deity-card--secondary {
+  background: rgba(255,153,51,0.05);
+  border-color: rgba(255,153,51,0.18);
+}
+
+.deity-card__badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  background: rgba(212,175,55,0.12);
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.deity-card__badge--secondary { color: var(--saffron); background: rgba(255,153,51,0.12); }
+
+.deity-card__name {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.deity-card__reason {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.prayer-time-card { display: flex; flex-direction: column; gap: 0; }
+
+.prayer-time-items {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.prayer-time-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 160px;
+}
+
+.prayer-time-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+
+.prayer-time-label {
+  font-size: 0.72rem;
+  color: var(--saffron);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.prayer-time-value { font-size: 0.88rem; color: var(--text-primary); margin-top: 2px; }
+
+.offerings-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.offering-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: var(--r-full);
+  background: rgba(212,175,55,0.10);
+  border: 1px solid rgba(212,175,55,0.22);
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  animation: cardFadeIn 0.4s ease-out forwards;
+}
+
+.lamp-card { display: flex; flex-direction: column; gap: 1rem; }
+
+.lamp-details { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+
+.lamp-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 120px;
+}
+
+.lamp-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+.lamp-label {
+  font-size: 0.72rem;
+  color: var(--saffron);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lamp-value { font-size: 0.88rem; color: var(--text-primary); margin-top: 2px; }
+
+.lamp-chant {
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.lamp-chant-label { font-size: 0.78rem; color: var(--saffron); }
+.lamp-chant-text { font-size: 0.88rem; color: var(--gold-light); font-style: italic; }
+
+.temple-card { display: flex; flex-direction: column; gap: 0; }
+
+.temple-rows { display: flex; flex-direction: column; }
+
+.temple-row {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.84rem;
+}
+
+.temple-row:last-child { border-bottom: none; }
+
+.temple-row-label {
+  min-width: 120px;
+  font-size: 0.75rem;
+  color: var(--saffron);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.temple-row-value { color: var(--text-primary); }
+
+.mantra-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.mantra-name {
+  font-size: 1.05rem;
+  color: var(--saffron);
+  letter-spacing: 0.05em;
+}
+
+.mantra-text {
+  font-size: 1rem;
+  color: var(--gold-light);
+  font-style: italic;
+  line-height: 1.6;
+  text-align: center;
+  text-shadow: 0 0 16px rgba(212,175,55,0.3);
+}
+
+.mantra-meta {
+  display: flex;
+  gap: 1rem;
+}
+
+.mantra-meta-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: var(--r-full);
+  background: rgba(212,175,55,0.10);
+  border: 1px solid rgba(212,175,55,0.20);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.situational-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.situational-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.situational-domain {
+  font-size: 0.88rem;
+  color: var(--saffron);
+}
+
+.situational-remedy {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+
+.calendar-week {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.calendar-week-label {
+  font-size: 0.75rem;
+  color: var(--saffron);
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(255,153,51,0.15);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.calendar-activities {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.calendar-activity {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.btn-copy-pariharam {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem auto 0;
+  padding: 0.75rem 2rem;
+  background: rgba(212,175,55,0.12);
+  border: 1px solid rgba(212,175,55,0.35);
+  border-radius: var(--r-md);
+  color: var(--gold);
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 200ms, border-color 200ms, transform 150ms;
+}
+
+.btn-copy-pariharam:hover {
+  background: rgba(212,175,55,0.20);
+  border-color: rgba(212,175,55,0.55);
+  transform: translateY(-1px);
+}
+
+/* ================================================================
+   ZONE 17 — MASTER REPORT
+   ================================================================ */
+.master-report-preview {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(212,175,55,0.12);
+  border-radius: var(--r-md);
+  padding: 1.5rem;
+  max-height: 480px;
+  overflow-y: auto;
+  margin-bottom: 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) transparent;
+}
+
+.master-report-preview::-webkit-scrollbar { width: 6px; }
+.master-report-preview::-webkit-scrollbar-track { background: transparent; }
+.master-report-preview::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+.report-text {
+  font-family: 'Courier New', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+.btn-copy-report {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+  padding: 0.8rem 2.5rem;
+  background: linear-gradient(135deg, var(--gold), var(--saffron));
+  border: none;
+  border-radius: var(--r-md);
+  color: #1a0800;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  animation: goldGlowPulse 2.5s ease-in-out infinite;
+  transition: transform 150ms, filter 150ms;
+  text-transform: uppercase;
+}
+
+.btn-copy-report:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.btn-copy-report--copied { animation: none; background: linear-gradient(135deg, #2a7a3a, #22c55e); }
+
+/* ================================================================
+   ZONE 17a — MOON AUTO-DETECT UI
+   ================================================================ */
+
+/* Detection banner */
+.moon-detect-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--r-md);
+  border: 1px solid;
+  margin: 0.25rem 0 1.25rem;
+  transition: all 300ms ease;
+}
+
+.moon-detect-banner--waiting {
+  background: rgba(100, 100, 140, 0.08);
+  border-color: rgba(150, 150, 200, 0.2);
+}
+
+.moon-detect-banner--found {
+  background: rgba(212, 175, 55, 0.07);
+  border-color: rgba(212, 175, 55, 0.35);
+  animation: moonBannerIn 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes moonBannerIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.moon-detect-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.moon-detect-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.moon-detect-title {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.moon-detect-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.15rem 0;
+}
+
+.moon-lon-pill {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.65rem;
+  background: rgba(100, 80, 200, 0.15);
+  border: 1px solid rgba(140, 120, 240, 0.3);
+  border-radius: 999px;
+  color: #c4b5fd;
+  font-family: monospace;
+  letter-spacing: 0.04em;
+}
+
+.moon-arrow {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.moon-rasi-pill {
+  font-size: 0.88rem;
+  padding: 0.25rem 0.8rem;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 999px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.moon-dot {
+  color: var(--text-muted);
+}
+
+.moon-natc-pill {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.8rem;
+  background: rgba(255, 153, 51, 0.1);
+  border: 1px solid rgba(255, 153, 51, 0.3);
+  border-radius: 999px;
+  color: var(--saffron);
+  letter-spacing: 0.03em;
+}
+
+.moon-pada {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  align-self: center;
+}
+
+.moon-detect-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* Override button */
+.moon-override-btn {
+  flex-shrink: 0;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--r-sm);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 150ms;
+  align-self: center;
+}
+
+.moon-override-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Override block */
+.moon-override-block {
+  border: 1px solid rgba(255, 153, 51, 0.2);
+  border-radius: var(--r-md);
+  padding: 1rem 1.25rem 0.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 153, 51, 0.04);
+}
+
+.moon-override-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.moon-override-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--saffron);
+  text-transform: uppercase;
+}
+
+.moon-auto-btn {
+  padding: 0.3rem 0.8rem;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 150ms;
+}
+
+.moon-auto-btn:hover {
+  background: rgba(212, 175, 55, 0.18);
+}
+
+/* Confirmed row */
+.moon-confirmed-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(212, 175, 55, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--r-md);
+  margin-bottom: 1.25rem;
+}
+
+.moon-confirmed-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.moon-confirmed-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.moon-confirmed-value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.moon-confirmed-eng {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.moon-confirmed-divider {
+  color: rgba(212, 175, 55, 0.3);
+  font-size: 1.4rem;
+  align-self: center;
+}
+
+/* ================================================================
+   ZONE 17b — RASI & NATCHATIRAM SECTION
+   ================================================================ */
+.rasi-natc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.rasi-card,
+.natc-card {
+  padding: 1.5rem;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(212,175,55,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rasi-card__header,
+.natc-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.rasi-symbol {
+  font-size: 2.8rem;
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(212,175,55,0.5);
+  flex-shrink: 0;
+}
+
+.natc-star-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.natc-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Symbol displayed as an inline meta row below the header */
+.natc-symbol-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.45rem 0.75rem;
+  background: rgba(212, 175, 55, 0.06);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--r-sm);
+}
+
+.natc-symbol-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.natc-symbol-value {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.rasi-badge,
+.natc-badge {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+  background: rgba(212,175,55,0.12);
+  border: 1px solid rgba(212,175,55,0.3);
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.rasi-name {
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+
+.rasi-english {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.rasi-meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.rasi-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.rasi-meta-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.rasi-meta-value {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.rasi-character {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-style: italic;
+  border-left: 2px solid rgba(212,175,55,0.3);
+  padding-left: 0.75rem;
+  margin: 0;
+}
+
+.rasi-traits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.rasi-strengths,
+.rasi-challenges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.trait-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.trait-label--green { color: #4ade80; }
+.trait-label--amber { color: var(--saffron); }
+.trait-label--red   { color: #f87171; }
+
+.trait-item {
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.trait-item--green { color: rgba(74, 222, 128, 0.85); }
+.trait-item--amber { color: rgba(255, 153, 51, 0.85); }
+.trait-item--red   { color: rgba(248, 113, 113, 0.85); }
+
+.rasi-lucky-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lucky-pill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 999px;
+  color: var(--text-secondary);
+}
+
+.rasi-compatible {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.compatible-pill {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.6rem;
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 999px;
+  color: #c4b5fd;
+}
+
+.rasi-fortune {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.natc-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.natc-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.natc-detail-value {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.natc-mantra {
+  padding: 1rem;
+  text-align: center;
+}
+
+.natc-mantra-text {
+  font-size: 1rem;
+  color: var(--gold);
+  font-style: italic;
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.natc-mantra-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* ================================================================
+   ZONE 17c — SANI (SATURN) CYCLE SECTION
+   ================================================================ */
+.sani-shani-decor {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: rgba(15, 10, 40, 0.5);
+  border: 1px solid rgba(100, 80, 180, 0.3);
+  border-radius: var(--r-md);
+  margin-bottom: 1.5rem;
+}
+
+.sani-planet-icon {
+  font-size: 3rem;
+  color: #a78bfa;
+  text-shadow: 0 0 20px rgba(167, 139, 250, 0.6);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.sani-shani-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sani-shani-label {
+  font-size: 1rem;
+  color: #a78bfa;
+  letter-spacing: 0.05em;
+}
+
+.sani-shani-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Status banner */
+.sani-status-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--r-md);
+  border: 1px solid;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.sani-status--red    { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.35); }
+.sani-status--amber  { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); }
+.sani-status--yellow { background: rgba(234, 179, 8, 0.12); border-color: rgba(234, 179, 8, 0.35); }
+.sani-status--green  { background: rgba(34, 197, 94, 0.10); border-color: rgba(34, 197, 94, 0.3); }
+
+.sani-status-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sani-status-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.sani-status-type {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  letter-spacing: 0.03em;
+}
+
+.sani-status-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.sani-status-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.sani-intensity {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+}
+
+.sani-intensity[data-intensity="Very-High"] { background: rgba(220,38,38,0.2); color: #fca5a5; border: 1px solid rgba(220,38,38,0.4); }
+.sani-intensity[data-intensity="High"]      { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid rgba(245,158,11,0.4); }
+.sani-intensity[data-intensity="Moderate"]  { background: rgba(234,179,8,0.2);  color: #fde68a; border: 1px solid rgba(234,179,8,0.4); }
+.sani-intensity[data-intensity="Clear"]     { background: rgba(34,197,94,0.2);  color: #86efac; border: 1px solid rgba(34,197,94,0.4); }
+
+.sani-ends-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Personal prediction */
+.sani-personal-pred {
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.sani-pred-header {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.sani-pred-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Two-col block */
+.sani-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.sani-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sani-block-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin: 0 0 0.25rem;
+}
+
+.sani-areas-list,
+.sani-remedies-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sani-area-item {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sani-area-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sani-area-dot--red    { background: #f87171; }
+.sani-area-dot--amber  { background: var(--saffron); }
+.sani-area-dot--yellow { background: #fde047; }
+.sani-area-dot--green  { background: #4ade80; }
+
+.sani-remedy-item {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Mantra card */
+.sani-mantra-card {
+  padding: 1.25rem;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.sani-mantra-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #a78bfa;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.sani-mantra-text {
+  font-size: 1rem;
+  color: #c4b5fd;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0.5rem 0;
+}
+
+.sani-mantra-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.mantra-meta-pill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  border-radius: 999px;
+  color: #c4b5fd;
+}
+
+/* Timeline */
+.sani-timeline-block {
+  margin-bottom: 1.5rem;
+}
+
+.sani-timeline-cards {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sani-timeline-item {
+  flex: 1;
+  min-width: 140px;
+  padding: 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid;
+  text-align: center;
+}
+
+.sani-timeline-item--past   { background: rgba(100,100,120,0.1); border-color: rgba(100,100,120,0.3); }
+.sani-timeline-item--active { background: rgba(220,38,38,0.1);   border-color: rgba(220,38,38,0.35); }
+.sani-timeline-item--clear  { background: rgba(34,197,94,0.08);  border-color: rgba(34,197,94,0.25); }
+.sani-timeline-item--future { background: rgba(212,175,55,0.08); border-color: rgba(212,175,55,0.25); }
+
+.sani-timeline-badge {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.sani-timeline-date {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.sani-timeline-arrow {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Saturn transit table */
+.sani-table-block {
+  margin-bottom: 1.5rem;
+}
+
+.sani-table {
+  margin-top: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.sani-table-header {
+  display: grid;
+  grid-template-columns: 1.4fr 2fr 1fr 1.6fr;
+  padding: 0.6rem 1rem;
+  background: rgba(212,175,55,0.1);
+  border-bottom: 1px solid rgba(212,175,55,0.2);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.sani-table-row {
+  display: grid;
+  grid-template-columns: 1.4fr 2fr 1fr 1.6fr;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  align-items: center;
+  font-size: 0.8rem;
+  transition: background 150ms;
+}
+
+.sani-table-row:last-child { border-bottom: none; }
+.sani-table-row:hover { background: rgba(255,255,255,0.03); }
+
+.sani-table-row--current {
+  background: rgba(212,175,55,0.08) !important;
+  border-left: 3px solid var(--gold);
+}
+
+.sani-table-row--future {
+  opacity: 0.7;
+}
+
+.sani-table-rasi  { color: var(--text-primary); }
+.sani-table-period { color: var(--text-muted); font-size: 0.75rem; }
+.sani-table-house { color: var(--text-secondary); }
+
+.sani-table-effect { font-size: 0.75rem; border-radius: 999px; padding: 0.15rem 0.6rem; text-align: center; display: inline-block; }
+.sani-table-effect--red    { background: rgba(220,38,38,0.15);  color: #fca5a5; border: 1px solid rgba(220,38,38,0.3); }
+.sani-table-effect--amber  { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+.sani-table-effect--yellow { background: rgba(234,179,8,0.15);  color: #fef08a; border: 1px solid rgba(234,179,8,0.3); }
+.sani-table-effect--green  { background: rgba(34,197,94,0.12);  color: #86efac; border: 1px solid rgba(34,197,94,0.25); }
+
+.sani-table-note {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin: 0.75rem 0 0;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Dasha card */
+.sani-dasha-card {
+  padding: 1.25rem;
+}
+
+.sani-dasha-header {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.sani-dasha-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sani-dasha-planet {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sani-dasha-value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.sani-dasha-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ================================================================
+   ZONE 18 — RESPONSIVE
+   ================================================================ */
+@media (max-width: 768px) {
+  .app-container { padding: 1rem 0.75rem 3rem; }
+
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group--full { grid-column: 1; }
+
+  .numerology-results-grid { grid-template-columns: 1fr; }
+  .vedic-grid { grid-template-columns: 1fr; }
+  .hora-lagna-grid { grid-template-columns: 1fr; }
+  .dos-donts-grid { grid-template-columns: 1fr; }
+  .remedy-grid { grid-template-columns: 1fr 1fr; }
+  .deity-grid { grid-template-columns: 1fr; }
+  .calendar-grid { grid-template-columns: 1fr 1fr; }
+  .rasi-natc-grid { grid-template-columns: 1fr; }
+  .rasi-traits { grid-template-columns: 1fr; }
+  .rasi-meta-row { grid-template-columns: 1fr 1fr; }
+  .sani-two-col { grid-template-columns: 1fr; }
+  .sani-table-header,
+  .sani-table-row { grid-template-columns: 1.2fr 1.8fr 0.8fr; }
+  .sani-table-header > span:nth-child(4),
+  .sani-table-row > span:nth-child(4) { display: none; }
+  .sani-timeline-cards { flex-direction: column; }
+  .sani-timeline-arrow { transform: rotate(90deg); align-self: center; }
+
+  .form-header { flex-direction: column; align-items: center; text-align: center; }
+
+  .glass-card { padding: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+  .calendar-grid { grid-template-columns: 1fr; }
+  .remedy-grid { grid-template-columns: 1fr; }
+  .prayer-time-items { flex-direction: column; }
+  .lamp-details { flex-direction: column; }
+  .rasi-meta-row { grid-template-columns: 1fr; }
+  .sani-status-banner { flex-direction: column; align-items: flex-start; }
+  .sani-status-right { align-items: flex-start; }
+}
