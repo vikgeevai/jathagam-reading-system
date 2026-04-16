@@ -11,7 +11,7 @@ interface AccessRecord {
   grantedAt: number
 }
 
-export const LANDING_URL = 'https://jathagam-landing.vercel.app'
+export const LANDING_URL = 'https://jothidam.co'
 
 // Stripe checkout session IDs start with cs_live_ or cs_test_ followed by ≥20 alphanumeric chars
 export function isValidSessionId(id: string): boolean {
