@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { STAR_DATA } from '@/data/astrologyData'
+import PaymentGate from '@/components/PaymentGate'
 import InputForm from '@/components/InputForm'
 import ChaldeanNumerology from '@/components/ChaldeanNumerology'
 import VedicNumerology from '@/components/VedicNumerology'
@@ -20,10 +21,11 @@ import { selectPredictions } from '@/utils/predictionsEngine'
 import { buildPariharamPlan } from '@/utils/pariharamEngine'
 import { calcSaniCycle } from '@/utils/saniCycleCalc'
 import { compileReport } from '@/utils/reportCompiler'
+import { NATCHATIRAM_DATA } from '@/data/rasiNatchatiramData'
 import type { ChaldeanResult, VedicResult } from '@/utils/numerologyCalc'
 import type { HoraLagnaResult } from '@/utils/horaLagnaCalc'
 import type { DomainResult } from '@/utils/domainScores'
-import type { Prediction } from '@/data/astrologyData'
+import type { Prediction, Planet } from '@/data/astrologyData'
 import type { FullPariharamPlan } from '@/utils/pariharamEngine'
 import type { SaniCycleResult } from '@/utils/saniCycleCalc'
 
@@ -70,10 +72,12 @@ export default function App() {
     const vedic = calcVedic(formData.dob, formData.gender)
     const horaLagna = calcHoraLagna(formData.dob, formData.timeOfBirth)
     const domains = calcDomainScores(vedic.moolank, vedic.bhagyank, horaLagna.horaLord, horaLagna.lagnaRuler)
-    const predictions = selectPredictions(vedic.moolank, vedic.bhagyank, horaLagna.horaLord, horaLagna.lagnaRuler, true)
-    const warnings = selectPredictions(vedic.moolank, vedic.bhagyank, horaLagna.horaLord, horaLagna.lagnaRuler, false)
-    const pariharam = buildPariharamPlan(horaLagna.horaLord, vedic.moolank, domains)
     const saniCycle = calcSaniCycle(formData.rasi, formData.natchatiram)
+    const natcData = NATCHATIRAM_DATA.find(n => n.tamilName === formData.natchatiram)
+    const natcRulingPlanet = natcData?.rulingPlanet as Planet | undefined
+    const predictions = selectPredictions(vedic.moolank, vedic.bhagyank, horaLagna.horaLord, horaLagna.lagnaRuler, true, 10, formData.rasi, natcRulingPlanet, saniCycle.currentSaniType)
+    const warnings = selectPredictions(vedic.moolank, vedic.bhagyank, horaLagna.horaLord, horaLagna.lagnaRuler, false, 10, formData.rasi, natcRulingPlanet, saniCycle.currentSaniType)
+    const pariharam = buildPariharamPlan(horaLagna.horaLord, vedic.moolank, domains)
 
     const partial: Omit<JathagamResult, 'reportText'> = {
       input: formData, chaldean, vedic, horaLagna, domains, predictions, warnings, pariharam, saniCycle,
@@ -85,7 +89,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <PaymentGate>
       <StarField />
       <div className="app-container">
         {!result ? (
@@ -124,6 +128,6 @@ export default function App() {
           </div>
         )}
       </div>
-    </>
+    </PaymentGate>
   )
 }

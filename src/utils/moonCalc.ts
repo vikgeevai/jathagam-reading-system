@@ -2,7 +2,7 @@
 // MOON LONGITUDE CALCULATOR — Sidereal (Hindu / Lahiri Ayanamsa)
 // Based on Jean Meeus "Astronomical Algorithms" Ch. 47 (simplified)
 // Accuracy: ≈ 0.3° – 0.5°, sufficient for Rasi/Nakshatra determination
-// Time assumption: input is Indian Standard Time (IST = UTC+5:30)
+// Time assumption: input is Singapore Standard Time (SGT = UTC+8)
 // ================================================================
 
 import { RASI_DATA, NATCHATIRAM_DATA } from '@/data/rasiNatchatiramData'
@@ -150,7 +150,7 @@ export interface MoonDetectionResult {
 
 export function detectRasiNatchatiram(
   dob: string,        // DD/MM/YYYY
-  timeOfBirth: string // HH:MM (24hr, IST)
+  timeOfBirth: string // HH:MM (24hr, SGT)
 ): MoonDetectionResult | null {
   // Parse date
   const dobMatch = dob.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)
@@ -166,9 +166,9 @@ export function detectRasiNatchatiram(
   if (month < 1 || month > 12 || day < 1 || day > 31) return null
   if (hours > 23 || mins > 59) return null
 
-  // Convert IST to UT (India is UTC+5:30)
-  const istDecimal = hours + mins / 60
-  const utHours = istDecimal - 5.5
+  // Convert SGT to UT (Singapore is UTC+8)
+  const sgtDecimal = hours + mins / 60
+  const utHours = sgtDecimal - 8
 
   // Handle day rollback if UT is previous day
   let utDay = day

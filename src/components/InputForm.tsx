@@ -175,7 +175,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
 
             {/* Time of Birth */}
             <div className="form-group">
-              <label className="form-label cinzel-heading" htmlFor="time">✦ Time of Birth (IST)</label>
+              <label className="form-label cinzel-heading" htmlFor="time">✦ Time of Birth (SGT)</label>
               <input
                 id="time" type="text"
                 className={`form-input ${errors.timeOfBirth ? 'form-input--error' : ''}`}
@@ -184,7 +184,7 @@ export default function InputForm({ onSubmit }: InputFormProps) {
                 onChange={e => handleTimeChange(e.target.value)}
               />
               {errors.timeOfBirth && <span className="form-error">{errors.timeOfBirth}</span>}
-              <span className="form-hint">Enter time in Indian Standard Time (IST)</span>
+              <span className="form-hint">Enter time in Singapore Standard Time (SGT)</span>
             </div>
 
             {/* Gender */}
